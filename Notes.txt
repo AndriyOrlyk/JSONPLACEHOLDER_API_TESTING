@@ -1,0 +1,41 @@
+Bugs Found in API:
+---------------------------------------------------------------------------
+Major - 500 (Internal Server Error) - For URI: https://jsonplaceholder.typicode.com/posts/101
+Minor - Find By userId or id should return a 404 Not Found error instead it returns 200 OK and empty data
+Minor - API did not enforce the type of String for title and body, nor type of int for userId. 
+		I manually discovered this but had written enough code that I did not want to deal with those scenarios as well.
+Minor - APIs do not seem enforce any limits on the size of Title or Body data values.
+
+EXPECTED RESULT FROM RUNNING ALL TESTS:
+---------------------------------------------------------------------------
+3 Failed Tests
+	CreateAResource - A Single Test
+	GetResourcesByUserId - Data Driven with 1 failure out of 5 tests.
+	UpdateAResource - Data Driven with 5 failures out of 5 tests.
+2 Passing Tests
+	GetAllResources - A Single Test
+	GetResourcesById - Data Driven with 4 successes out of 4 tests.
+
+
+About my Approach:
+---------------------------------------------------------------------------
+I wanted to demonstrate failing tests so the logs could be viewed for their ability to expose the reason for the failures.
+
+Some of the failures are somewhat contrived. For example the API documents up front that certain features, like updating a resource,
+does not really modify the underlying database. Yet I chose to test them as if they should be updating the resource.
+
+*** In the ValidateResourceContainsExpectedData method I demonstrate doing useful work while an Async method is working in the
+background. In the case of this code it probably doesn't make a big difference, but it could make a difference for other APIs
+under test.
+
+
+Problems with the API Set used for this Exercise:
+---------------------------------------------------------------------------
+This API set is too simplistic, there are not a lot of ways to vary the inputs so as to come up with many interesting scenarios to
+exercise. It is also not documented well enough to establish what the contracts for each of endpoints are, so you tend to accept
+whatever you discover as the expected result.
+
+A better approach for this sort of exercise would be to craft a set of API endpoints with a well defined contract that has
+multiple variations that could potentially be broken and include a few bugs in the implementation to be disovered.
+
+
